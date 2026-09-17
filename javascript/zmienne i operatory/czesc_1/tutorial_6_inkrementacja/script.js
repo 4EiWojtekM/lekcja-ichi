@@ -1,2 +1,17 @@
-// Przetestuj operatory ++, +=, -=
 let punkty = 10;
+document.write("Masz "+punkty + " punktów");
+document.write("<br>");
+document.write("Walczysz z randomem +1pkt");
+document.write("<br>");
+punkty++;
+document.write("Masz "+punkty + " punktów");
+document.write("<br>");
+document.write("Wpadasz na skarb +5pkt");
+document.write("<br>");
+punkty+=5;
+document.write("Masz "+punkty + " punktów");
+document.write("<br>");
+document.write("Utkąłeś w pułapce -2pkt");
+document.write("<br>");
+punkty-=2;
+document.write("Kończysz z "+punkty + " punktami");
