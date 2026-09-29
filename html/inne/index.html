@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOID — Digital Experience</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #050507;
+  --card: rgba(255,255,255,.055);
+  --line: rgba(255,255,255,.1);
+  --text: #f4f4f5;
+  --muted: #8b8b96;
+  --lime: #c7ff32;
+  --purple: #8b5cf6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Inter, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+}
+
+/* NOISE */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+/* GLOW ORBS */
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.orb.one {
+  width: 380px;
+  height: 380px;
+  background: var(--purple);
+  top: -120px;
+  right: -100px;
+  opacity: .22;
+}
+
+.orb.two {
+  width: 320px;
+  height: 320px;
+  background: var(--lime);
+  bottom: 10%;
+  left: -180px;
+  opacity: .1;
+}
+
+/* NAV */
+
+nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(920px, calc(100% - 32px));
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 14px 12px 18px;
+
+  border: 1px solid var(--line);
+  border-radius: 18px;
+
+  background: rgba(10,10,13,.72);
+  backdrop-filter: blur(20px);
+
+  box-shadow: 0 20px 70px rgba(0,0,0,.35);
+}
+
+.logo {
+  font-weight: 900;
+  letter-spacing: -.08em;
+  font-size: 18px;
+}
+
+.logo span {
+  color: var(--lime);
+}
+
+nav .links {
+  display: flex;
+  gap: 24px;
+}
+
+nav a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: .2s;
+}
+
+nav a:hover {
+  color: white;
+}
+
+.nav-btn {
+  border: 0;
+  background: var(--lime);
+  color: #111;
+  font-weight: 800;
+  border-radius: 11px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+/* MAIN */
+
+main {
+  width: min(1180px, calc(100% - 36px));
+  margin: auto;
+}
+
+/* HERO */
+
+.hero {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding-top: 80px;
+  position: relative;
+}
+
+.hero-inner {
+  text-align: center;
+  max-width: 900px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: 1px solid var(--line);
+  background: var(--card);
+
+  padding: 8px 12px;
+  border-radius: 999px;
+
+  color: #bdbdc7;
+  font-size: 12px;
+  margin-bottom: 25px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 14px var(--lime);
+}
+
+h1 {
+  font-size: clamp(58px, 11vw, 150px);
+  line-height: .82;
+  letter-spacing: -.09em;
+  font-weight: 900;
+}
+
+h1 em {
+  color: transparent;
+  -webkit-text-stroke: 1px #777;
+  font-style: normal;
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 580px;
+  margin: 30px auto;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 14px 20px;
+  border-radius: 13px;
+  font-size: 13px;
+  font-weight: 800;
+  transition: .25s;
+}
+
+.primary {
+  color: #101010;
+  background: var(--lime);
+  box-shadow: 0 0 40px rgba(199,255,50,.18);
+}
+
+.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 55px rgba(199,255,50,.35);
+}
+
+.secondary {
+  color: white;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.secondary:hover {
+  background: rgba(255,255,255,.1);
+  transform: translateY(-3px);
+}
+
+/* MARQUEE */
+
+.marquee {
+  border-block: 1px solid var(--line);
+  overflow: hidden;
+  white-space: nowrap;
+  color: #666;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  padding: 15px 0;
+}
+
+.track {
+  display: inline-block;
+  animation: move 18s linear infinite;
+}
+
+@keyframes move {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* SECTIONS */
+
+section {
+  padding: 120px 0;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: end;
+  margin-bottom: 45px;
+}
+
+.kicker {
+  color: var(--lime);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+h2 {
+  margin-top: 10px;
+  font-size: clamp(36px, 6vw, 70px);
+  letter-spacing: -.07em;
+  line-height: .95;
+}
+
+.section-head p {
+  color: var(--muted);
+  max-width: 330px;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+/* CARDS */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.card {
+  min-height: 300px;
+
+  border: 1px solid var(--line);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+
+  transition: .3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(199,255,50,.35);
+}
+
+.card::after {
+  content: "";
+
+  position: absolute;
+  width: 170px;
+  height: 170px;
+
+  right: -80px;
+  bottom: -80px;
+
+  background: var(--purple);
+  filter: blur(65px);
+  opacity: .3;
+}
+
+.num {
+  color: #555;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.icon {
+  font-size: 35px;
+  margin: 45px 0 20px;
+}
+
+.card h3 {
+  font-size: 22px;
+  letter-spacing: -.04em;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+  max-width: 270px;
+}
+
+/* SHOWCASE */
+
+.showcase {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 14px;
+}
+
+.visual {
+  min-height: 500px;
+
+  border-radius: 28px;
+  border: 1px solid var(--line);
+
+  overflow: hidden;
+  position: relative;
+
+  background: #0b0b10;
+}
+
+.visual::before {
+  content: "";
+
+  position: absolute;
+  inset: 15%;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 90deg,
+      var(--lime),
+      var(--purple),
+      #0ff,
+      var(--lime)
+    );
+
+  filter: blur(45px);
+  opacity: .5;
+
+  animation: spin 8s linear infinite;
+}
+
+.visual::after {
+  content: "VOID";
+
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  font-size: clamp(70px, 12vw, 150px);
+  font-weight: 900;
+  letter-spacing: -.1em;
+
+  color: white;
+  mix-blend-mode: overlay;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg) scale(1.15);
+  }
+}
+
+.side {
+  display: grid;
+  gap: 14px;
+}
+
+.stat {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+
+  padding: 28px;
+
+  background: var(--card);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat strong {
+  font-size: 58px;
+  letter-spacing: -.08em;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* CTA */
+
+.cta {
+  text-align: center;
+  padding: 100px 20px;
+
+  border: 1px solid var(--line);
+  border-radius: 30px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(199,255,50,.12),
+      transparent 45%
+    ),
+    var(--card);
+}
+
+.cta h2 {
+  max-width: 750px;
+  margin: 10px auto 25px;
+}
+
+/* FOOTER */
+
+footer {
+  border-top: 1px solid var(--line);
+
+  padding: 25px 0 45px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #666;
+  font-size: 11px;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+
+  nav .links {
+    display: none;
+  }
+
+  .grid,
+  .showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head {
+    display: block;
+  }
+
+  .section-head p {
+    margin-top: 18px;
+  }
+
+  .visual {
+    min-height: 360px;
+  }
+
+  section {
+    padding: 80px 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="orb one"></div>
+<div class="orb two"></div>
+
+<nav>
+
+  <div class="logo">
+    V<span>Ø</span>ID.
+  </div>
+
+  <div class="links">
+    <a href="#about">ABOUT</a>
+    <a href="#work">WORK</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+
+  <button
+    class="nav-btn"
+    onclick="document.querySelector('#contact').scrollIntoView()"
+  >
+    LET'S GO ↗
+  </button>
+
+</nav>
+
+<main>
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="hero-inner">
+
+    <div class="eyebrow">
+      <span class="dot"></span>
+      DIGITAL STUFF / 2026
+    </div>
+
+    <h1>
+      MAKE IT<br>
+      <em>LOUD.</em>
+    </h1>
+
+    <p>
+      Strona, która nie próbuje się podobać wszystkim.
+      Mocny layout, brutalistyczne detale, neonowy glow
+      i animacje, które robią robotę.
+    </p>
+
+    <div class="actions">
+
+      <a class="btn primary" href="#work">
+        EXPLORE ↓
+      </a>
+
+      <a class="btn secondary" href="#about">
+        WHY VOID?
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<!-- MARQUEE -->
+
+<div class="marquee">
+
+  <div class="track">
+    DESIGN • MOTION • CODE • ATTITUDE •
+    DESIGN • MOTION • CODE • ATTITUDE •
+    DESIGN • MOTION • CODE • ATTITUDE •
+    DESIGN • MOTION • CODE • ATTITUDE •
+  </div>
+
+</div>
+
+<main>
+
+<!-- ABOUT -->
+
+<section id="about">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="kicker">
+        01 / PHILOSOPHY
+      </div>
+
+      <h2>
+        NO BORING<br>
+        PIXELS.
+      </h2>
+
+    </div>
+
+    <p>
+      Każdy element ma charakter.
+      Zero stockowego wyglądu,
+      maksimum kontrastu i przestrzeni.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+
+      <div class="num">01</div>
+
+      <div class="icon">✦</div>
+
+      <h3>VISUAL IMPACT</h3>
+
+      <p>
+        Typografia, glow, gradienty i kompozycja
+        zaprojektowane tak, żeby pierwsze
+        wrażenie zostało na długo.
+      </p>
+
+    </article>
+
+
+    <article class="card">
+
+      <div class="num">02</div>
+
+      <div class="icon">⌁</div>
+
+      <h3>SMOOTH MOTION</h3>
+
+      <p>
+        Subtelne ruchy i mikrointerakcje
+        dodają stronie życia bez zamieniania
+        jej w pokaz slajdów.
+      </p>
+
+    </article>
+
+
+    <article class="card">
+
+      <div class="num">03</div>
+
+      <div class="icon">◈</div>
+
+      <h3>PURE CODE</h3>
+
+      <p>
+        Czysty HTML, CSS i JavaScript.
+        Bez ciężkich frameworków —
+        szybki start i pełna kontrola.
+      </p>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- WORK -->
+
+<section id="work">
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="kicker">
+        02 / THE DROP
+      </div>
+
+      <h2>
+        BUILT<br>
+        DIFFERENT.
+      </h2>
+
+    </div>
+
+    <p>
+      Mały showcase, żeby pokazać
+      jak mocno można wycisnąć sam CSS.
+    </p>
+
+  </div>
+
+
+  <div class="showcase">
+
+    <div class="visual"></div>
+
+    <div class="side">
+
+      <div class="stat">
+
+        <span>
+          LINES OF CSS ENERGY
+        </span>
+
+        <strong>
+          ∞
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <span>
+          BOREDOM LEVEL
+        </span>
+
+        <strong>
+          0%
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+  <div class="cta">
+
+    <div class="kicker">
+      03 / NEXT MOVE
+    </div>
+
+    <h2>
+      READY TO BREAK<br>
+      THE TEMPLATE?
+    </h2>
+
+    <a
+      class="btn primary"
+      href="mailto:hello@void.example"
+    >
+      START SOMETHING ↗
+    </a>
+
+  </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <span>
+    © 2026 VOID.
+  </span>
+
+  <span>
+    BUILT WITH TOO MUCH CSS.
+  </span>
+
+</footer>
+
+</main>
+
+
+<script>
+
+document
+  .querySelectorAll('a[href^="#"]')
+  .forEach(a => {
+
+    a.addEventListener('click', e => {
+
+      const el =
+        document.querySelector(
+          a.getAttribute('href')
+        );
+
+      if (el) {
+
+        e.preventDefault();
+
+        el.scrollIntoView({
+          behavior: 'smooth'
+        });
+
+      }
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
